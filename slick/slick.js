@@ -2093,7 +2093,7 @@
 
         var _ = this;
 
-        if(_options.slideCount >= _.options.slidesToShow){
+        if(_.options.slideCount >= _.options.slidesToShow){
             _.setDimensions();
 
             _.setHeight();
