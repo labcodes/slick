@@ -314,7 +314,10 @@
                 } else {
                     animProps[_.animType] = 'translate3d(0px,' + targetLeft + 'px, 0px)';
                 }
-                _.$slideTrack.css(animProps);
+
+                if (_.options.centerMode === false || _.slideCount > _.options.slidesToShow) {
+                    _.$slideTrack.css(animProps);
+                }
 
                 if (callback) {
                     setTimeout(function() {
@@ -1899,9 +1902,11 @@
             positionProps = {};
             if (_.cssTransitions === false) {
                 positionProps[_.animType] = 'translate(' + x + ', ' + y + ')';
-                _.$slideTrack.css(positionProps);
             } else {
                 positionProps[_.animType] = 'translate3d(' + x + ', ' + y + ', 0px)';
+            }
+
+            if (_.options.centerMode === false || _.slideCount > _.options.slidesToShow) {
                 _.$slideTrack.css(positionProps);
             }
         }
@@ -1913,14 +1918,14 @@
         var _ = this;
 
         if (_.options.vertical === false) {
-            if (_.options.centerMode === true) {
+            if (_.options.centerMode === true && _.slideCount > _.options.slidesToShow) {
                 _.$list.css({
                     padding: ('0px ' + _.options.centerPadding)
                 });
             }
         } else {
             _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
-            if (_.options.centerMode === true) {
+            if (_.options.centerMode === true && _.slideCount > _.options.slidesToShow) {
                 _.$list.css({
                     padding: (_.options.centerPadding + ' 0px')
                 });
@@ -2093,19 +2098,17 @@
 
         var _ = this;
 
-        if(_.options.slideCount >= _.options.slidesToShow){
-            _.setDimensions();
+        _.setDimensions();
 
-            _.setHeight();
+        _.setHeight();
 
-            if (_.options.fade === false) {
-                _.setCSS(_.getLeft(_.currentSlide));
-            } else {
-                _.setFade();
-            }
-
-            _.$slider.trigger('setPosition', [_]);
+        if (_.options.fade === false) {
+            _.setCSS(_.getLeft(_.currentSlide));
+        } else {
+            _.setFade();
         }
+
+        _.$slider.trigger('setPosition', [_]);
 
     };
 
